@@ -21,8 +21,8 @@ function operate(n1, n2, operation) {
         case 'division':
             result = (n1 / n2) 
     }
-    if (result == 'Infinity' || (n1 == 0 && n2 == 0)) {
-        return 'Really?'
+    if (result == 'Infinity') {
+        return 'Bruh'
     }
 
     return isNaN(result) ? n1 : result
@@ -111,6 +111,13 @@ specialBtns.forEach((btn) => {
                 }
 
                 lastPressedBtn = '=';
+
+                if (display.textContent.length > 10) {
+                    display.textContent = display.textContent.slice(0, 10)
+                }
+                if (display.textContent.includes('.')) {
+                    display.textContent = Math.round(display.textContent * 100) / 100
+                }
             }
             
     })
