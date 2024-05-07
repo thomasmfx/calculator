@@ -7,6 +7,7 @@ function operate(n1, n2, operation) {
     n1 = Number(n1);
     n2 = Number(n2);
 
+
     switch (operation) {
         case 'addition':
             result = (n1 + n2)
@@ -20,8 +21,11 @@ function operate(n1, n2, operation) {
         case 'division':
             result = (n1 / n2) 
     }
+    if (result == 'Infinity' || (n1 == 0 && n2 == 0)) {
+        return 'Really?'
+    }
 
-    return isNaN(result) ? n1 : result;
+    return isNaN(result) ? n1 : result
 }
 
 let n1 = 0;
@@ -29,7 +33,7 @@ let n2 = 0;
 
 padNumbers.forEach(number => {
     number.addEventListener("click", () => {
-        if(display.textContent.length < 10) {
+        if(display.textContent.length < 10) { 
             display.textContent += Number(number.textContent)
         }
     })
@@ -40,71 +44,73 @@ let lastPressedBtn = '';
 // The purple buttons
 specialBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-        const button = btn.textContent;
+        const button = btn.value;
         
         switch (button) {
-            case ' CE ':
+            case 'CE':
                 display.textContent = null;
                 n1 = 0;
                 n2 = 0;
                 break;
-            case ' C ':
+            case 'C':
                 display.textContent = null;
                 n2 = 0;
                 break;
-            case ' +/- ':
+            case '+/-':
                 if (display.textContent.length === 10) {
                     display.style.fontSize = '56px'
-                } else {
+                } else if (display.textContent.length != 10){
                     display.style.fontSize = '60px'
                 }
-                display.textContent = -display.textContent;
+                if (display.textContent != '') {
+                    display.textContent = -display.textContent;
+                }
                 break;
-            case ' ÷ ':
+            case '÷':
                 if (display.textContent != '') {
                     n1 = display.textContent;
                 }
                 display.textContent = null;
-                lastPressedBtn = ' ÷ ';
+                lastPressedBtn = '÷';
                 break;
-            case ' × ':
+            case '×':
                 if (display.textContent != '') {
                     n1 = display.textContent;
                 }
                 display.textContent = null;
-                lastPressedBtn = ' × ';
+                lastPressedBtn = '×';
                 break;
-            case ' - ':
+            case '-':
                 if (display.textContent != '') {
                     n1 = display.textContent;
                 }
                 display.textContent = null;
-                lastPressedBtn = ' - ';
+                lastPressedBtn = '-';
                 break;
-            case ' + ':
+            case '+':
                 if (display.textContent != '') {
                     n1 = display.textContent;
                 }
                 display.textContent = null;
-                lastPressedBtn = ' + ';
+                lastPressedBtn = '+';
                 break;
-            case ' = ':
+            case '=':
 
-                if (lastPressedBtn == ' ÷ ') {
+                if (lastPressedBtn == '÷') {
                     n2 = display.textContent;
                     display.textContent = operate(n1, n2, 'division')
-                } else if (lastPressedBtn == ' × ') {
+                } else if (lastPressedBtn == '×') {
                     n2 = display.textContent;
                     display.textContent = operate(n1, n2, 'multiplication')
-                } else if (lastPressedBtn == ' - ') {
+                } else if (lastPressedBtn == '-') {
                     n2 = display.textContent;
                     display.textContent = operate(n1, n2, 'subtraction')
-                } else if (lastPressedBtn == ' + ') {
+                } else if (lastPressedBtn == '+') {
                     n2 = display.textContent;
                     display.textContent = operate(n1, n2, 'addition')
                 }
 
-                lastPressedBtn = ' = '
+                lastPressedBtn = '=';
             }
             
     })
@@ -113,16 +119,15 @@ specialBtns.forEach((btn) => {
 const dotAndErase = document.querySelectorAll(".dot-erase");
 dotAndErase.forEach((btn) => {
     btn.addEventListener("click", () => {
-        button = btn.textContent;
+        button = btn.value;
         switch (button) {
-            case ' • ':
-                if (!display.textContent.includes('.') && display.textContent != '') {
+            case '•':
+                if (!display.textContent.includes('.') && (display.textContent != '')) {
                     display.textContent += '.';
                 }
-                lastPressedBtn = ' • ';  
-            case ' ⌫ ':
+                break; 
+            case '⌫':
                 display.textContent = display.textContent.slice(0, -1)
-                break;
         }
     })
 });
