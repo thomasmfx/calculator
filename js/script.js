@@ -1,48 +1,45 @@
 const display = document.querySelector("#display-digits");
-const numbers = document.querySelectorAll(".numbers");
+const padNumbers = document.querySelectorAll(".numbers");
 const specialBtns = document.querySelectorAll(".special-btns");
-const times = document.querySelector(".times");
 
-function operate(n1, operation, n2) {
+function operate(n1, n2, operation) {
     let result = 0;
-    n1 = parseInt(n1);
-    n2 = parseInt(n2);
+    n1 = Number(n1);
+    n2 = Number(n2);
 
     switch (operation) {
-        case 'plus':
+        case 'addition':
             result = (n1 + n2)
             break;
-        case 'minus':
+        case 'subtraction':
             result = (n1 - n2)
             break;
-        case 'times':
+        case 'multiplication':
             result = (n1 * n2)
             break;
         case 'division':
-            result = (n1 * n2) 
+            result = (n1 / n2) 
     }
 
-    return isNaN(result) ? n1 : result
-
+    return isNaN(result) ? n1 : result;
 }
 
 let n1 = 0;
 let n2 = 0;
 
-numbers.forEach(number => {
+padNumbers.forEach(number => {
     number.addEventListener("click", () => {
         if(display.textContent.length < 10) {
-            display.textContent += parseInt(number.textContent)
+            display.textContent += Number(number.textContent)
         }
     })
 });
 
 let lastPressedBtn = '';
 
+// The purple buttons
 specialBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-        const erase = document.querySelector(".erase");
-        const dot = document.querySelector(".dot");
         const button = btn.textContent;
         
         switch (button) {
@@ -56,50 +53,78 @@ specialBtns.forEach((btn) => {
                 n2 = 0;
                 break;
             case ' +/- ':
+                if (display.textContent.length === 10) {
+                    display.style.fontSize = '56px'
+                } else {
+                    display.style.fontSize = '60px'
+                }
                 display.textContent = -display.textContent;
                 break;
             case ' ÷ ':
-                
-                break;
-            case times:
-                n1 = display.textContent;
+                if (display.textContent != '') {
+                    n1 = display.textContent;
+                }
                 display.textContent = null;
-                lastPressedBtn = times;
+                lastPressedBtn = ' ÷ ';
+                break;
+            case ' × ':
+                if (display.textContent != '') {
+                    n1 = display.textContent;
+                }
+                display.textContent = null;
+                lastPressedBtn = ' × ';
                 break;
             case ' - ':
-                n1 = display.textContent;
+                if (display.textContent != '') {
+                    n1 = display.textContent;
+                }
                 display.textContent = null;
                 lastPressedBtn = ' - ';
                 break;
             case ' + ':
-                n1 = display.textContent;
+                if (display.textContent != '') {
+                    n1 = display.textContent;
+                }
                 display.textContent = null;
                 lastPressedBtn = ' + ';
                 break;
-            case dot:
-                display.textContent += '.';
-                break;
-            case erase:
-                alert(display.textContent)
+            case ' = ':
+
+                if (lastPressedBtn == ' ÷ ') {
+                    n2 = display.textContent;
+                    display.textContent = operate(n1, n2, 'division')
+                } else if (lastPressedBtn == ' × ') {
+                    n2 = display.textContent;
+                    display.textContent = operate(n1, n2, 'multiplication')
+                } else if (lastPressedBtn == ' - ') {
+                    n2 = display.textContent;
+                    display.textContent = operate(n1, n2, 'subtraction')
+                } else if (lastPressedBtn == ' + ') {
+                    n2 = display.textContent;
+                    display.textContent = operate(n1, n2, 'addition')
+                }
+
+                lastPressedBtn = ' = '
+            }
+            
+    })
+});
+
+const dotAndErase = document.querySelectorAll(".dot-erase");
+dotAndErase.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        button = btn.textContent;
+        switch (button) {
+            case ' • ':
+                if (!display.textContent.includes('.') && display.textContent != '') {
+                    display.textContent += '.';
+                }
+                lastPressedBtn = ' • ';  
+            case ' ⌫ ':
                 display.textContent = display.textContent.slice(0, -1)
                 break;
-            case ' = ':
-                if (lastPressedBtn == ' + ') {
-                    n2 = display.textContent;
-                    display.textContent = operate(n1, 'plus', n2)
-                } else if(lastPressedBtn == ' - ') {
-                    n2 = display.textContent;
-                    display.textContent = operate(n1, 'minus', n2)
-                } else if (lastPressedBtn == times) {
-                    n2 = display.textContent;
-                    display.textContent = operate(n1, 'multiply', n2)
-                } else if (lastPressedBtn == ' ÷ ') {
-                    n2 = display.textContent;
-                    display.textContent = operate(n1, 'division', n2)
-                }
         }
-            
-    });
+    })
 });
 
 
