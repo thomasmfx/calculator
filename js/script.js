@@ -89,6 +89,7 @@ function specialBtnsOperations(value) {
             break;
         case '÷':
         case '/':
+            // First `if`: subsequently calculate (for all operators)
             if (lastPressedBtn != '÷') {
                 if (display.textContent != '') {
                     n1 = display.textContent;
@@ -165,6 +166,7 @@ padNumbers.forEach(number => {
                 n1 = display.textContent
                 display.textContent = null
                 display.textContent += Number(number.textContent)
+                isMidOperation = false;
             } else if(isMidOperation == false) {
                 display.textContent += Number(number.textContent)
             }
