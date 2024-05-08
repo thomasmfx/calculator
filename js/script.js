@@ -4,6 +4,9 @@ const specialBtns = document.querySelectorAll(".special-btns");
 let lastPressedBtn = '';
 let n1 = 0;
 let n2 = 0;
+// Checks if the user is calculating more than 
+// a single pair of numbers at a time
+let isMidOperation = false; 
 
 function operate(n1, n2, operation) {
     let result = 0;
@@ -35,6 +38,7 @@ function operate(n1, n2, operation) {
         display.textContent = display.textContent.slice(0, 10)
     }
     if (display.textContent.includes('.')) {
+        // Round numbers to 2 decimals
         display.textContent = Math.round(display.textContent * 100) / 100
     }
     
@@ -52,6 +56,7 @@ function equals() {
     } else if (lastPressedBtn == '+') {
         operate(n1, n2, 'addition')
     }
+    isMidOperation == false
 };
 
 function specialBtnsOperations(value) {
@@ -62,11 +67,13 @@ function specialBtnsOperations(value) {
             display.textContent = null;
             n1 = 0;
             n2 = 0;
+            isMidOperation = false;
             break;
         case 'C':
         case 'Control':
             display.textContent = null;
             n2 = 0;
+            isMidOperation = false;
             break;
         case '+/-':
         case 'Shift':
@@ -82,32 +89,60 @@ function specialBtnsOperations(value) {
             break;
         case '÷':
         case '/':
-            if (display.textContent != '') {
-                n1 = display.textContent;
+            if (lastPressedBtn != '÷') {
+                if (display.textContent != '') {
+                    n1 = display.textContent;
+                }
+                display.textContent = null;
+                isMidOperation = false;
+            } else {
+                operate(n1, n2, 'division')
+                n1 = display.textContent
+                isMidOperation = true;
             }
-            display.textContent = null;
             lastPressedBtn = '÷';
             break;
         case '×':
         case '*':
-            if (display.textContent != '') {
-                n1 = display.textContent;
+            if (lastPressedBtn != '×') {
+                if (display.textContent != '') {
+                    n1 = display.textContent;
+                }
+                display.textContent = null;
+                isMidOperation = false;
+            } else {
+                operate(n1, n2, 'multiplication')
+                n1 = display.textContent
+                isMidOperation = true;
             }
-            display.textContent = null;
             lastPressedBtn = '×';
             break;
         case '-':
-            if (display.textContent != '') {
-                n1 = display.textContent;
+            if (lastPressedBtn != '-') {
+                if (display.textContent != '') {
+                    n1 = display.textContent;
+                }
+                display.textContent = null;
+                isMidOperation = false;
+            } else {
+                operate(n1, n2, 'subtraction')
+                n1 = display.textContent
+                isMidOperation = true;
             }
-            display.textContent = null;
             lastPressedBtn = '-';
             break;
         case '+':
-            if (display.textContent != '') {
-                n1 = display.textContent;
+            if (lastPressedBtn != '+') {
+                if (display.textContent != '') {
+                    n1 = display.textContent;
+                }
+                display.textContent = null;
+                isMidOperation = false;
+            } else {
+                operate(n1, n2, 'addition')
+                n1 = display.textContent
+                isMidOperation = true;
             }
-            display.textContent = null;
             lastPressedBtn = '+';
             break;
         case '•':
@@ -126,7 +161,13 @@ function specialBtnsOperations(value) {
 padNumbers.forEach(number => {
     number.addEventListener("click", () => {
         if(display.textContent.length < 10) { 
-            display.textContent += Number(number.textContent)
+            if(isMidOperation == true) {
+                n1 = display.textContent
+                display.textContent = null
+                display.textContent += Number(number.textContent)
+            } else if(isMidOperation == false) {
+                display.textContent += Number(number.textContent)
+            }
         }
     })
 });
@@ -165,6 +206,7 @@ specialBtns.forEach((btn) => {
                 break;
             case '=':
                 equals()
+                isMidOperation = false;
             }
             
     })
@@ -204,6 +246,7 @@ document.addEventListener("keydown", (event) => {
             break;
         case 'Enter':
             equals()
+            isMidOperation = false;
         }
 
         if (keyName >= 0 && keyName <= 9) {
