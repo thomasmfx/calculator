@@ -16,7 +16,7 @@ body {
     height: 565px;
     width: 440px;
     margin: auto;
-    margin-top: 140px;
+    margin-top: 175px;
 }
 
 #display {
@@ -61,12 +61,17 @@ body {
 }
 
 .btns.special-btns {
-    color: #b8b8ff;
+    color: #afafff;
+}
+
+.dot, .erase {
+    color: #fcfffc !important;
 }
 
 .btns:active {
     box-shadow: 0 0 7px #fcfffc;
     text-shadow: 0 0 7px #fcfffc;
 }
+
 
 
