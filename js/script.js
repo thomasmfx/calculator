@@ -15,16 +15,19 @@ function operate(n1, n2, operation) {
 
 
     switch (operation) {
-        case 'addition':
+        
+        case '+':
             result = (n1 + n2)
             break;
-        case 'subtraction':
+        case '-':
             result = (n1 - n2)
             break;
-        case 'multiplication':
+        case '×':
+        case '*':
             result = (n1 * n2)
             break;
-        case 'division':
+        case '÷':
+        case '/':
             result = (n1 / n2) 
     }
 
@@ -46,16 +49,8 @@ function operate(n1, n2, operation) {
 };
 
 // Only for '=' or 'Enter'
-function equals() {
-    if (lastPressedBtn == '÷') {
-        operate(n1, n2, 'division')
-    } else if (lastPressedBtn == '×') {
-        operate(n1, n2, 'multiplication')
-    } else if (lastPressedBtn == '-') {
-        operate(n1, n2, 'subtraction')
-    } else if (lastPressedBtn == '+') {
-        operate(n1, n2, 'addition')
-    }
+function equals(lastPressedBtn) {
+    operate(n1, n2, lastPressedBtn)
     isMidOperation == false
 };
 
@@ -89,62 +84,62 @@ function specialBtnsOperations(value) {
             break;
         case '÷':
         case '/':
-            // First `if`: subsequently calculate (for all operators)
-            if (lastPressedBtn != '÷') {
+            // First `if`: subsequently calculate 
+            if (lastPressedBtn != value) {
                 if (display.textContent != '') {
                     n1 = display.textContent;
                 }
                 display.textContent = null;
                 isMidOperation = false;
             } else {
-                operate(n1, n2, 'division')
+                operate(n1, n2, value)
                 n1 = display.textContent
                 isMidOperation = true;
             }
-            lastPressedBtn = '÷';
+            lastPressedBtn = value;
             break;
         case '×':
         case '*':
-            if (lastPressedBtn != '×') {
+            if (lastPressedBtn != value) {
                 if (display.textContent != '') {
                     n1 = display.textContent;
                 }
                 display.textContent = null;
                 isMidOperation = false;
             } else {
-                operate(n1, n2, 'multiplication')
+                operate(n1, n2, value)
                 n1 = display.textContent
                 isMidOperation = true;
             }
-            lastPressedBtn = '×';
+            lastPressedBtn = value;
             break;
         case '-':
-            if (lastPressedBtn != '-') {
+            if (lastPressedBtn != value) {
                 if (display.textContent != '') {
                     n1 = display.textContent;
                 }
                 display.textContent = null;
                 isMidOperation = false;
             } else {
-                operate(n1, n2, 'subtraction')
+                operate(n1, n2, value)
                 n1 = display.textContent
                 isMidOperation = true;
             }
-            lastPressedBtn = '-';
+            lastPressedBtn = value;
             break;
         case '+':
-            if (lastPressedBtn != '+') {
+            if (lastPressedBtn != value) {
                 if (display.textContent != '') {
                     n1 = display.textContent;
                 }
                 display.textContent = null;
                 isMidOperation = false;
             } else {
-                operate(n1, n2, 'addition')
+                operate(n1, n2, value)
                 n1 = display.textContent
                 isMidOperation = true;
             }
-            lastPressedBtn = '+';
+            lastPressedBtn = value;
             break;
         case '•':
         case '.':
@@ -155,12 +150,16 @@ function specialBtnsOperations(value) {
         case '⌫':
         case 'Backspace':
             display.textContent = display.textContent.slice(0, -1)
+            break;
+        case '=':
+        case 'Enter':
+            equals(lastPressedBtn)
+            isMidOperation = false;
         }
 };
 
-// Buttons support
-padNumbers.forEach(number => {
-    number.addEventListener("click", () => {
+function canDisplayNumber(number, inputOrigin) {
+    if(inputOrigin == 'button') {
         if(display.textContent.length < 10) { 
             if(isMidOperation == true) {
                 n1 = display.textContent
@@ -171,91 +170,39 @@ padNumbers.forEach(number => {
                 display.textContent += Number(number.textContent)
             }
         }
+    } else {
+        if(number.key >= 0 && number.key <= 9 ) {
+            if(display.textContent.length < 10) { 
+                if(isMidOperation == true) {
+                    n1 = display.textContent
+                    display.textContent = null
+                    display.textContent += Number(number.key)
+                    isMidOperation = false;
+                } else if(isMidOperation == false) {
+                    display.textContent +=Number(number.key)
+                }
+            }
+        }
+    }
+}
+
+// Buttons support
+padNumbers.forEach(number => {
+    number.addEventListener("click", () => {
+        canDisplayNumber(number, 'button')
     })
 });
 
 specialBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-        const button = btn.value;
-        
-        switch (button) {
-            case 'CE':
-                specialBtnsOperations(button)
-                break;
-            case 'C':
-                specialBtnsOperations(button)
-                break;
-            case '+/-':
-                specialBtnsOperations(button)
-                break;
-            case '÷':
-                specialBtnsOperations(button)
-                break;
-            case '×':
-                specialBtnsOperations(button)
-                break;
-            case '-':
-                specialBtnsOperations(button)
-                break;
-            case '+':
-                specialBtnsOperations(button)
-                break;
-            case '•':
-                specialBtnsOperations(button)
-                break; 
-            case ('⌫'):
-                specialBtnsOperations(button)
-                break;
-            case '=':
-                equals()
-                isMidOperation = false;
-            }
-            
+        specialBtnsOperations(btn.value)
     })
 });
 
 // Keyboard support
-document.addEventListener("keydown", (event) => {
-    const keyName = event.key;
-
-    switch (keyName) {
-        case 'Backspace':
-            specialBtnsOperations(keyName)
-            break;
-        case '.':
-            specialBtnsOperations(keyName)
-            break;
-        case 'Delete':
-            specialBtnsOperations(keyName)
-            break;
-        case 'Control':
-            specialBtnsOperations(keyName)
-            break;
-        case 'Shift':
-            specialBtnsOperations(keyName)
-            break;
-        case '/':
-            specialBtnsOperations(keyName)
-            break;
-        case '*':
-            specialBtnsOperations(keyName)
-            break;
-        case '-':
-            specialBtnsOperations(keyName)
-            break;
-        case '+':
-            specialBtnsOperations(keyName)
-            break;
-        case 'Enter':
-            equals()
-            isMidOperation = false;
-        }
-
-        if (keyName >= 0 && keyName <= 9) {
-            if(display.textContent.length < 10) { 
-                display.textContent += Number(keyName)
-        }
-    }
+document.addEventListener("keydown", (event) => {  
+    specialBtnsOperations(event.key)
+    canDisplayNumber(event, 'keyboard')
 });
 
 console.log("I couldn't allow the calculator to evaluate more than a single pair of numbers at a time combinating different operators :P my bad")
