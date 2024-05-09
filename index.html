@@ -6,9 +6,10 @@
     <title>Skyculator</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/script.js" defer></script>
+    <script src="https://kit.fontawesome.com/5e7b46bf3f.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div id="container">
+    <main id="container">
         <div id="display">
             <span id="display-digits"></span>
         </div>
@@ -43,10 +44,17 @@
 
         <div class="rows">
             <button class="btns numbers" value="0"> 0 </button>
-            <button class="btns special-btns dot" value="•"> • </button>
-            <button class="btns special-btns erase" value="⌫"> ⌫ </button>
+            <button class="btns special-btns" id="dot" value="•"> • </button>
+            <button class="btns special-btns" id="erase"value="⌫"> ⌫ </button>
             <button class="btns special-btns" value="="> = </button>
         </div>
-    </div>
+    </main>
+
+    <footer>
+        Copyright © 2024 thomasmfx
+        <a href="https://github.com/thomasmfx" target="_blank">
+            <i class="fa-brands fa-github fa-lg" style="color: #ffffff;"></i>
+        </a>
+    </footer>
 </body>
 </html>

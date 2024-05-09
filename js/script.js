@@ -257,3 +257,5 @@ document.addEventListener("keydown", (event) => {
         }
     }
 });
+
+console.log("I couldn't allow the calculator to evaluate more than a single pair of numbers at a time combinating different operators :P my bad")

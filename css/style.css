@@ -3,30 +3,32 @@
 
 *, *::before, *::after {
     box-sizing: border-box;
-    font-family: "Jetbrains Mono", monospace, sans-serif;
+    
 }
 
 body {
+    font-family: "Jetbrains Mono", monospace, sans-serif;
     background-image: url(https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
 }
 
 #container {
     border: 5px solid #fcfffc;
     border-radius: 25px;
-    height: 565px;
+    height: 570px;
     width: 440px;
     margin: auto;
-    margin-top: 175px;
+    margin-top: 150px;
 }
 
 #display {
+    font-family: "Jetbrains Mono", monospace, sans-serif;
     display: flex;
     justify-content: right;
     align-items: center;
     border: 5px solid #fcfffc;
     border-radius: 20px;
     width: 90%;
-    height: 100px;
+    height: 18.5%;
     margin: auto;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -48,6 +50,7 @@ body {
 }
 
 .btns {
+    font-family: "Jetbrains Mono", monospace, sans-serif;
     font-size: 1.5rem;
     color: #fcfffc;
     background: none;
@@ -64,14 +67,39 @@ body {
     color: #afafff;
 }
 
-.dot, .erase {
+#dot, #erase {
     color: #fcfffc !important;
 }
 
-.btns:active {
-    box-shadow: 0 0 7px #fcfffc;
-    text-shadow: 0 0 7px #fcfffc;
+.btns:hover {
+    box-shadow: 0 0 3px #fcfffc;
+    text-shadow: 0 0 3px #fcfffc;
 }
 
+.btns:active {
+    box-shadow: 0 0 8px #fcfffc;
+    text-shadow: 0 0 8px #fcfffc;
+}
 
+footer {    
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    color: white;
+}
+
+i {
+    transition: all .2s ease-in-out;
+}
+
+i:hover {
+    transform: scale(1.2)
+}
 
