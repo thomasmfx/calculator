@@ -96,7 +96,7 @@ footer {
 }
 
 i {
-    transition: all .2s ease-in-out;
+    transition: .2s ease-in-out;
 }
 
 i:hover {

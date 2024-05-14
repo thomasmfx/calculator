@@ -2,11 +2,12 @@ const display = document.querySelector("#display-digits");
 const padNumbers = document.querySelectorAll(".numbers");
 const specialBtns = document.querySelectorAll(".special-btns");
 let lastPressedBtn = '';
-let n1 = 0;
-let n2 = 0;
+let n1;
+let n2;
 // Checks if the user is calculating more than 
 // a single pair of numbers at a time
-let isMidOperation = false; 
+let isMidOperation = ''; 
+
 
 function operate(n1, n2, operation) {
     let result = 0;
@@ -45,7 +46,7 @@ function operate(n1, n2, operation) {
         display.textContent = Math.round(display.textContent * 100) / 100
     }
     
-    lastPressedBtn = '=';
+    lastPressedBtn = operation;
 };
 
 // Only for '=' or 'Enter'
@@ -84,60 +85,58 @@ function specialBtnsOperations(value) {
             break;
         case '÷':
         case '/':
-            // First `if`: subsequently calculate 
-            if (lastPressedBtn != value) {
+            if (lastPressedBtn == value) {
+                operate(n1, n2, value)
+                n1 = display.textContent
+                isMidOperation = true;
+            } else {
                 if (display.textContent != '') {
                     n1 = display.textContent;
                 }
                 display.textContent = null;
-                isMidOperation = false;
-            } else {
-                operate(n1, n2, value)
-                n1 = display.textContent
-                isMidOperation = true;
+                isMidOperation = false; 
             }
             lastPressedBtn = value;
             break;
         case '×':
         case '*':
-            if (lastPressedBtn != value) {
+            if (lastPressedBtn == value) {
+                operate(n1, n2, value)
+                n1 = display.textContent
+                isMidOperation = true;
+            } else {
                 if (display.textContent != '') {
                     n1 = display.textContent;
                 }
                 display.textContent = null;
-                isMidOperation = false;
-            } else {
-                operate(n1, n2, value)
-                n1 = display.textContent
-                isMidOperation = true;
+                isMidOperation = false; 
             }
             lastPressedBtn = value;
             break;
         case '-':
-            if (lastPressedBtn != value) {
-                if (display.textContent != '') {
-                    n1 = display.textContent;
-                }
-                display.textContent = null;
-                isMidOperation = false;
-            } else {
+            if (lastPressedBtn == value) {
                 operate(n1, n2, value)
                 n1 = display.textContent
                 isMidOperation = true;
+            } else {
+                if (display.textContent != '') {
+                    operate(n1, n2, lastPressedBtn)
+                    n1 = display.textContent;
+                }
+                display.textContent = null;                
             }
             lastPressedBtn = value;
             break;
         case '+':
-            if (lastPressedBtn != value) {
+            if (lastPressedBtn == value) {
+                operate(n1, n2, value)
+                n1 = display.textContent
+                isMidOperation = true;
+            } else {
                 if (display.textContent != '') {
                     n1 = display.textContent;
                 }
                 display.textContent = null;
-                isMidOperation = false;
-            } else {
-                operate(n1, n2, value)
-                n1 = display.textContent
-                isMidOperation = true;
             }
             lastPressedBtn = value;
             break;
