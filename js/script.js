@@ -42,7 +42,7 @@ function operate(n1, n2, operation) {
         display.textContent = display.textContent.slice(0, 10)
     }
     if (display.textContent.includes('.')) {
-        // Round numbers to 2 decimals
+        // Round numbers to 2 decimals:
         display.textContent = Math.round(display.textContent * 100) / 100
     }
     
@@ -64,6 +64,7 @@ function specialBtnsOperations(value) {
             n1 = 0;
             n2 = 0;
             isMidOperation = false;
+            lastPressedBtn = '';
             break;
         case 'C':
         case 'Control':
@@ -96,14 +97,15 @@ function specialBtnsOperations(value) {
                 display.textContent = null;
                 isMidOperation = false; 
             }
+            
             lastPressedBtn = value;
             break;
         case '×':
         case '*':
             if (lastPressedBtn == value) {
-                operate(n1, n2, value)
-                n1 = display.textContent
-                isMidOperation = true;
+                    operate(n1, n2, value)
+                    n1 = display.textContent
+                    isMidOperation = true;
             } else {
                 if (display.textContent != '') {
                     n1 = display.textContent;
@@ -111,33 +113,37 @@ function specialBtnsOperations(value) {
                 display.textContent = null;
                 isMidOperation = false; 
             }
+
             lastPressedBtn = value;
             break;
         case '-':
             if (lastPressedBtn == value) {
-                operate(n1, n2, value)
-                n1 = display.textContent
-                isMidOperation = true;
-            } else {
-                if (display.textContent != '') {
-                    operate(n1, n2, lastPressedBtn)
-                    n1 = display.textContent;
-                }
-                display.textContent = null;                
-            }
-            lastPressedBtn = value;
-            break;
-        case '+':
-            if (lastPressedBtn == value) {
-                operate(n1, n2, value)
-                n1 = display.textContent
-                isMidOperation = true;
+                    operate(n1, n2, value)
+                    n1 = display.textContent
+                    isMidOperation = true;
             } else {
                 if (display.textContent != '') {
                     n1 = display.textContent;
                 }
                 display.textContent = null;
+                isMidOperation = false; 
             }
+
+            lastPressedBtn = value;
+            break;
+        case '+':
+            if (lastPressedBtn == value) {
+                    operate(n1, n2, value)
+                    n1 = display.textContent
+                    isMidOperation = true;
+            } else {
+                if (display.textContent != '') {
+                    n1 = display.textContent;
+                }
+                display.textContent = null;
+                isMidOperation = false; 
+            }
+
             lastPressedBtn = value;
             break;
         case '•':
@@ -145,6 +151,8 @@ function specialBtnsOperations(value) {
             if (!display.textContent.includes('.') && (display.textContent != '')) {
                 display.textContent += '.';
             }
+
+            lastPressedBtn = value;
             break; 
         case '⌫':
         case 'Backspace':
@@ -153,7 +161,7 @@ function specialBtnsOperations(value) {
         case '=':
         case 'Enter':
             equals(lastPressedBtn)
-            isMidOperation = false;
+            lastPressedBtn = '';
         }
 };
 
