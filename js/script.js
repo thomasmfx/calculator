@@ -67,7 +67,7 @@ function specialBtnsOperations(value) {
             lastPressedBtn = '';
             break;
         case 'C':
-        case 'Control':
+        case 'c':
             display.textContent = null;
             n2 = 0;
             isMidOperation = false;
@@ -152,7 +152,6 @@ function specialBtnsOperations(value) {
                 display.textContent += '.';
             }
 
-            lastPressedBtn = value;
             break; 
         case '⌫':
         case 'Backspace':
