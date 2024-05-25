@@ -32,7 +32,7 @@ function operate(n1, n2, operation) {
             result = (n1 / n2) 
     }
 
-    if (result == 'Infinity') {
+    if (result == 'Infinity' || '-Infinity') {
         return display.textContent = 'Bruh'
     }
 
